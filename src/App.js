@@ -32,25 +32,21 @@ function Board({ xIsNext, squares, onPlay }) {
     status = "Next move is: " + (xIsNext ? 'X' : '0')
   }
   
+  const board = []
+  for (let j = 0; j < 3; j++) {
+    let row = []
+    for (let i = 0; i < 3; i++) {
+      row.push(<Square key = {j*3+i} value = {squares[j*3+i]} onSquareClick = {() => handleClick(j*3+i)}/>);
+      
+    }
+    board.push(<div key = {j} className='board-row'>{row}</div>)
+    
+  }
 
   return (
     <>
       <div className='status'>{status}</div>
-      <div className='board-row'>
-        <Square value = {squares[0]} onSquareClick = {() => handleClick(0)}/>
-        <Square value = {squares[1]} onSquareClick = {() => handleClick(1)}/>
-        <Square value = {squares[2]} onSquareClick = {() => handleClick(2)}/>
-      </div>
-      <div className='board-row'>
-        <Square value = {squares[3]} onSquareClick = {() => handleClick(3)}/>
-        <Square value = {squares[4]} onSquareClick = {() => handleClick(4)}/>
-        <Square value = {squares[5]} onSquareClick = {() => handleClick(5)}/>
-      </div>
-      <div className='board-row'>
-        <Square value = {squares[6]} onSquareClick = {() => handleClick(6)}/>
-        <Square value = {squares[7]} onSquareClick = {() => handleClick(7)}/>
-        <Square value = {squares[8]} onSquareClick = {() => handleClick(8)}/>
-      </div>
+      {board}
     </>
   )
 }
@@ -59,6 +55,7 @@ function Game() {
   
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
+  const [isAscending, setIsAscending] = useState(true);
   const currentSquares =  history[currentMove];
   const xIsNext = currentMove % 2 === 0
 
@@ -70,6 +67,10 @@ function Game() {
 
   function jumpTo(nextMove) {
     setCurrentMove(nextMove);
+  }
+
+  function toggleOrder() {
+    setIsAscending(!isAscending);
   }
 
   const moves = history.map((squares, move) => {
@@ -96,8 +97,9 @@ function Game() {
       </div>
       <div className='game-info'>
         {"You're at move #" + currentMove}
+        <button onClick = {toggleOrder}>Toggle</button>
         <ol>
-          {moves}
+          {isAscending ? moves : moves.reverse()}
         </ol>
       </div>
     </div>
