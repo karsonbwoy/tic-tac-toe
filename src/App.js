@@ -21,7 +21,7 @@ function Board({ xIsNext, squares, onPlay }) {
     } else {
       nextSquares[i] = 'O';
     }
-    onPlay(nextSquares);
+    onPlay(nextSquares, i);
   }
 
   let status;
@@ -63,11 +63,14 @@ function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
   const [isAscending, setIsAscending] = useState(true);
+  const [clickHistory, setClickHistory] = useState([]);
   const currentSquares =  history[currentMove];
   const xIsNext = currentMove % 2 === 0
 
-  function handlePlay(nextSquares) {
-    const nextHistory = [...history.slice(0, currentMove+1), nextSquares]
+  function handlePlay(nextSquares, i) {
+    const nextHistory = [...history.slice(0, currentMove+1), nextSquares];
+    const nextClickHistory = [...clickHistory.slice(0,currentMove), i];
+    setClickHistory(nextClickHistory);
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length-1);
   }
@@ -85,8 +88,10 @@ function Game() {
       return ;
     }
     let description;
+    let x = clickHistory[move-1]%3+1;
+    let y = (clickHistory[move-1] - clickHistory[move-1]%3)/3+1
     if(move > 0){
-      description = 'Go to move #' + move;
+      description = 'Go to move #' + move + ' Position: ' + x + ', ' + y;
     } else {
       description = 'Go to game start';
     }
