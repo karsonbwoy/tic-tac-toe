@@ -1,15 +1,41 @@
 import Board from "./Board.js";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Game() {
   
-    const [history, setHistory] = useState([Array(9).fill(null)]);
-    const [currentMove, setCurrentMove] = useState(0);
-    const [isAscending, setIsAscending] = useState(true);
-    const [clickHistory, setClickHistory] = useState([]);
+    const initialGameState = loadGameState() || {
+        history: [Array(9).fill(null)],
+        currentMove: 0,
+        clickHistory: [],
+        isAscending: true
+      };
+    
+    const [history, setHistory] = useState(initialGameState.history);
+    const [currentMove, setCurrentMove] = useState(initialGameState.currentMove);
+    const [clickHistory, setClickHistory] = useState(initialGameState.clickHistory);
+    const [isAscending, setIsAscending] = useState(initialGameState.isAscending);
     const currentSquares =  history[currentMove];
     const xIsNext = currentMove % 2 === 0
   
+    function saveGameState(history, currentMove, clickHistory, isAscending) {
+        const gameState = {
+          history,
+          currentMove,
+          clickHistory,
+          isAscending
+        };
+        localStorage.setItem('ticTacToeGameState', JSON.stringify(gameState));
+      }
+
+      function loadGameState() {
+        const gameState = localStorage.getItem('ticTacToeGameState');
+        return gameState ? JSON.parse(gameState) : null;
+      }
+
+      useEffect(() => {
+        saveGameState(history, currentMove, clickHistory, isAscending);
+      }, [history, currentMove, clickHistory, isAscending]);
+
     function handlePlay(nextSquares, i) {
       const nextHistory = [...history.slice(0, currentMove+1), nextSquares];
       const nextClickHistory = [...clickHistory.slice(0,currentMove), i];
@@ -24,6 +50,15 @@ export default function Game() {
   
     function toggleOrder() {
       setIsAscending(!isAscending);
+    }
+
+    function handleReset() {
+        
+            setHistory([Array(9).fill(null)]);
+            setCurrentMove (0);
+            setClickHistory([]);
+            setIsAscending(true);
+        
     }
   
     const moves = history.map((squares, move) => {
@@ -58,6 +93,7 @@ export default function Game() {
           <ol>
             {isAscending ? moves : moves.reverse()}
           </ol>
+          <button onClick = {handleReset}>Reset</button>
         </div>
       </div>
     )  
