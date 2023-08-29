@@ -1,9 +1,9 @@
 import './App.css';
 import { useState } from 'react';
 
-function Square({value, isWinning, onSquareClick}) {
+function Square({value, isWinning, onSquareClick, winner}) {
   return (
-    <button className = {isWinning ? 'square winning-square' : 'square'} onClick={onSquareClick}>{value}</button>
+    <button className = {isWinning ? 'square winning-square' : 'square'} disabled={value !== null || winner} onClick={onSquareClick} >{value}</button>
   );
 }
 
@@ -42,7 +42,9 @@ function Board({ xIsNext, squares, onPlay }) {
         key = {j*3+i} 
         value = {squares[j*3+i]} 
         isWinning = {line.includes(j*3+i)}
-        onSquareClick = {() => handleClick(j*3+i)}/>
+        onSquareClick = {() => handleClick(j*3+i)}
+        winner = {winner}
+        />
       );
       
     }
@@ -53,7 +55,9 @@ function Board({ xIsNext, squares, onPlay }) {
   return (
     <>
       <div className='status'>{status}</div>
-      {board}
+      <div className='board'>
+        {board}
+      </div>
     </>
   )
 }
@@ -85,7 +89,7 @@ function Game() {
 
   const moves = history.map((squares, move) => {
     if(currentMove === move){
-      return ;
+      return null;
     }
     let description;
     let x = clickHistory[move-1]%3+1;
@@ -108,7 +112,9 @@ function Game() {
         <Board xIsNext = {xIsNext} squares = {currentSquares} onPlay = {handlePlay}/>
       </div>
       <div className='game-info'>
-        {"You're at move #" + currentMove}
+        <span>
+        {"You're at move #" + currentMove + ' '}
+        </span>
         <button onClick = {toggleOrder}>Toggle</button>
         <ol>
           {isAscending ? moves : moves.reverse()}
