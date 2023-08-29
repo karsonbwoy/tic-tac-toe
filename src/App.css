@@ -23,6 +23,7 @@
   margin: 0 auto;
   overflow: hidden;
   box-sizing: border-box; 
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
 .square {
@@ -40,7 +41,7 @@
   height: 102px; 
 }
 .square:not(.winning-square):not([disabled]):hover {
-  background: rgb(237, 237, 237);
+  background: rgba(237, 237, 237, 0.8);
 }
 
 [disabled]{
@@ -61,9 +62,12 @@
 .game-info {
   text-align: center; 
   margin-top: 20px;
+  margin-left: 20px;
+  padding-top: 20px;
   width: 300px; 
   overflow: hidden; 
-  height: 440px;
+  height: 460px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
 .game-info ol {
