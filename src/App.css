@@ -16,7 +16,7 @@
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
   gap: 2px;
-  background-color: #f5f5f5;
+  background-color: #f5f5f577;
   border-radius: 5px;
   width: 310px;
   height: 310px;
@@ -27,7 +27,7 @@
 }
 
 .square {
-  background: #fff;
+  background: #fff7;
   border: 1px solid gray;
   border-radius: 1px;
   font-size: 48px;
@@ -41,7 +41,7 @@
   height: 102px; 
 }
 .square:not(.winning-square):not([disabled]):hover {
-  background: rgba(237, 237, 237, 0.8);
+  background: rgba(237, 237, 237, 1);
 }
 
 [disabled]{
@@ -82,11 +82,12 @@
   margin-bottom: 5px; 
 }
 
-.game-info button {
-  background-color: #007bff;
+button {
+  background-color: #007bffdd;
   color: white;
   border: none;
   padding: 10px 20px;
+  margin-right: 20px;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -94,4 +95,9 @@
 
 .game-info button:hover {
   background-color: #0056b3;
+}
+
+.dark-mode{
+  background-color: #444444;
+  color: #ebebeb;
 }

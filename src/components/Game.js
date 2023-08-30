@@ -7,22 +7,25 @@ export default function Game() {
         history: [Array(9).fill(null)],
         currentMove: 0,
         clickHistory: [],
-        isAscending: true
+        isAscending: true,
+        darkMode: false
       };
     
     const [history, setHistory] = useState(initialGameState.history);
     const [currentMove, setCurrentMove] = useState(initialGameState.currentMove);
     const [clickHistory, setClickHistory] = useState(initialGameState.clickHistory);
     const [isAscending, setIsAscending] = useState(initialGameState.isAscending);
+    const [darkMode, setDarkMode] = useState(initialGameState.darkMode);
     const currentSquares =  history[currentMove];
     const xIsNext = currentMove % 2 === 0
   
-    function saveGameState(history, currentMove, clickHistory, isAscending) {
+    function saveGameState(history, currentMove, clickHistory, isAscending, darkMode) {
         const gameState = {
           history,
           currentMove,
           clickHistory,
-          isAscending
+          isAscending,
+          darkMode
         };
         localStorage.setItem('ticTacToeGameState', JSON.stringify(gameState));
       }
@@ -33,8 +36,8 @@ export default function Game() {
       }
 
       useEffect(() => {
-        saveGameState(history, currentMove, clickHistory, isAscending);
-      }, [history, currentMove, clickHistory, isAscending]);
+        saveGameState(history, currentMove, clickHistory, isAscending, darkMode);
+      }, [history, currentMove, clickHistory, isAscending, darkMode]);
 
     function handlePlay(nextSquares, i) {
       const nextHistory = [...history.slice(0, currentMove+1), nextSquares];
@@ -50,6 +53,10 @@ export default function Game() {
   
     function toggleOrder() {
       setIsAscending(!isAscending);
+    }
+
+    function toggleDarkMode() {
+      setDarkMode(!darkMode);
     }
 
     function handleReset() {
@@ -81,7 +88,8 @@ export default function Game() {
     });
   
     return (
-      <div className='game'>
+      <div className={`game ${darkMode ? 'dark-mode' : ''}`}>
+        <button onClick={toggleDarkMode}>{darkMode ? 'Light mode' : 'Dark mode'}</button>
         <div className='game-board'>
           <Board xIsNext = {xIsNext} squares = {currentSquares} onPlay = {handlePlay}/>
         </div>
