@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 export default function Game() {
   
     const initialGameState = loadGameState() || {
-        history: [Array(9).fill(null)],
+        history: [],
         currentMove: 0,
         clickHistory: [],
         isAscending: true,
